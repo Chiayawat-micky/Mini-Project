@@ -103,4 +103,37 @@ public class Graph {
         }
         System.out.println("-----------------------");
     }
+
+    public double seriesEquation(double num1,double num2){
+        double sum = num1 + num2;
+        return sum;
+    }
+
+    public double parallelEquation(double num1,double num2){
+        double sum = (num1 * num2) / (num1 + num2);
+        return sum;
+    }
+
+    public void circuitReductionParallel(){
+        Vertex Vtemp = vertexList;
+        while(Vtemp != null){
+            Edge Etemp = Vtemp.edgeList;
+            while(Etemp != null){
+                Edge prev = Etemp;
+                Edge nametemp = Etemp.next;
+                while(nametemp != null){
+                    if(Etemp.destination.equals(nametemp.destination)){
+                        Etemp.resistance = parallelEquation(Etemp.resistance, nametemp.resistance);
+                        prev.next = nametemp.next;
+                        nametemp = prev.next;
+                    }else{
+                        prev = nametemp;
+                        nametemp = nametemp.next;
+                    }
+                }
+                Etemp = Etemp.next;
+            }
+            Vtemp = Vtemp.next;
+        }
+    }
 }
