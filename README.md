@@ -1,6 +1,12 @@
 # Mini-Project
 - ค่า Resistance จะถูกเก็บไว้ในตัวแปร private double resistance; ภายใน Edge
-- มีฟังก์ชั่น addVertex
+- ฟังก์ชั่น checkName เอาไว้เช็คว่า มีชื่อนี้ใน Vertex List รึยัง
+- ฟังก์ชั่น addVertex จะไม่เพิ่ม Vertex ที่มีชื่อนั้นอยู่แล้วโดยใช้ฟังก์ชั่น checkName ช่วย
 - มีฟังก์ชั่น findVertex
-- มีฟังก์ชั่น addEdge (เป็นการ add แบบ Undirected Edge ไปและกลับได้ เอาไว้เช็คว่า 2 Node เชื่อมกันแค่ตัวมันเองจริงๆ)
+- มีฟังก์ชั่น addEdge (เป็นการ add แบบ Undirected Edge ไปและกลับได้ เอาไว้เช็คว่า Node นั้นอยู่ตรงกลางจริงๆ)
 - ฟังก์ชั่น circuitReductionParallel ทำงานโดยการวนทุก Vertex แล้วหาว่าตัว Edge ไหนที่มี destination เหมือนกัน แล้วก็ยุบวงจรแบบขนานลง
+- ฟังก์ชั่น circuitReductionSeries ทำงานโดยหาตัวที่มี Degree = 2 หรือว่า Node ที่อยู่ตรงกลางและทำการรวมค่า R จาก Node ด้ายหน้าและ Node ด้านหลังจากนั้นค่อยลบตัวเองทิ้ง
+- ฟังก์ชั่น deleteEdgeFrom เอาไว้ลบ Edge ที่ต้องการจาก Vertex นั้น
+- ฟังก์ชั่น totalResistance เอาไว้บอกค่ารวมของ Resistance โดยการยุบทั้งหมดก่อนแล้วค่อยนำค่า Resistance ออกมาจาก Edge ของ Vertex ตัวแรก
+- ฟังก์ชั่น display เอาไว้แสดงข้อมุลแบบ Adjacency List
+- ฟังก์ช่น getDegree เอาไว้บอกว่า Vertex นั้นเชื่อม Edge ไว้กี่ตัว
