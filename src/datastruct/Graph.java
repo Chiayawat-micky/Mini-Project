@@ -23,10 +23,24 @@ public class Graph {
         private Edge next;
     }
 
+    public boolean checkName(String name){
+        Vertex tempV = vertexList;
+        while(tempV != null){
+            if(tempV.name.equals(name)){
+                return true;
+            }
+            tempV = tempV.next;
+        }
+        return false;
+    }
+
     public void addVertex(String name) {
         Vertex newVertex = new Vertex();
         newVertex.name = name;
-        if (vertexList == null) {
+        if(checkName(name) == true){
+            return;
+        }
+        else if (vertexList == null) {
             vertexList = newVertex;
             return;
         }
@@ -82,26 +96,26 @@ public class Graph {
 
     public void display() {
         Vertex tempV = vertexList;
-        System.out.println("--- โครงสร้างวงจรไฟฟ้า ---");
+        System.out.println("--- Electrical Circuit Structure ---");
         if (tempV == null) {
-            System.out.println("วงจรว่างเปล่า (ยังไม่มี Node)");
+            System.out.println("Circuit is empty (No Nodes)");
             return;
         }
         while (tempV != null) {
-            System.out.print("จุด [" + tempV.name + "] เชื่อมต่อกับ: ");
+            System.out.print("Node [" + tempV.name + "] connects to: ");
             Edge tempE = tempV.edgeList;
             if (tempE == null) {
-                System.out.print("ไม่มีสายไฟเชื่อมต่อ");
+                System.out.print("No connections");
             } else {
                 while (tempE != null) {
-                    System.out.print(" -> (ไป " + tempE.destination.name + " | R = " + tempE.resistance + " Ohm)");
+                    System.out.printf("-> (to + %s | R = %.2f Ohm)",tempE.destination.name,tempE.resistance);
                     tempE = tempE.next;
                 }
             }
             System.out.println();
             tempV = tempV.next;
         }
-        System.out.println("-----------------------");
+        System.out.println("------------------------------");
     }
 
     public double seriesEquation(double num1,double num2){
@@ -135,5 +149,66 @@ public class Graph {
             }
             Vtemp = Vtemp.next;
         }
+    }
+
+    public void circuitReductionSeries(){
+        Vertex Vtemp = vertexList;
+        Vertex prevV = null;
+        while(Vtemp != null){
+            if(getDegree(Vtemp.name) == 2){
+                Edge e1 = Vtemp.edgeList;
+                Edge e2 = e1.next;
+                Vertex n1 = e1.destination;
+                Vertex n2 = e2.destination;
+                double datatemp = seriesEquation(e1.resistance, e2.resistance);
+                addEdge(n1.name, n2.name, datatemp);
+                deleteEdgeFrom(n1, Vtemp);
+                deleteEdgeFrom(n2, Vtemp);
+                if(prevV == null){
+                    vertexList = Vtemp.next;
+                }else{
+                    prevV.next = Vtemp.next;
+
+                }
+                Vtemp = vertexList;
+                prevV = null;
+                continue;
+            }
+            prevV = Vtemp;
+            Vtemp = Vtemp.next;
+        }
+    }
+
+    public void deleteEdgeFrom(Vertex from,Vertex target){
+        Edge Etemp = from.edgeList;
+        Edge prev = null;
+        while(Etemp != null){
+            if(Etemp.destination == target){
+                if(prev == null){
+                    from.edgeList = Etemp.next;
+                }else{
+                    prev.next = Etemp.next;
+                }
+                return;
+            }
+            prev = Etemp;
+            Etemp = Etemp.next;
+        }
+    }
+
+    public void totalResistance(){
+        if(vertexList == null){
+            System.out.println("Not found Vertex in Graph.");
+            return;
+        }
+        Vertex tempV = vertexList;
+        Edge tempE = tempV.edgeList;
+        if (tempE == null) {
+        System.out.println("No resistance data found.");
+        return;
+    }
+        System.out.println("------------------------------");
+        System.out.printf("Total of resistanece is %.2f Ohm.\n",tempE.resistance);
+        System.out.println("------------------------------");
     }
 }
