@@ -1,4 +1,4 @@
-package project;
+package app;
 
 import datastruct.Graph;
 import java.util.Scanner;
@@ -8,9 +8,9 @@ public class miniProject {
         Scanner sc = new Scanner(System.in);
         Graph myGraph = new Graph();
         System.out.println("Press the name NODE and num of resistance(A B 50) (Press 'END' to end the system ): ");
-        while(true){
+        while (true) {
             String source = sc.next();
-            if(source.equals("END")){
+            if (source.equals("END")) {
                 break;
             }
             String destination = sc.next();
@@ -23,8 +23,8 @@ public class miniProject {
         myGraph.display();
         myGraph.circuitReductionParallel();
         myGraph.circuitReductionSeries();
-        //System.out.println("After reduction circuit");
-        //myGraph.display();
+        // System.out.println("After reduction circuit");
+        // myGraph.display();
         myGraph.totalResistance();
     }
 }
