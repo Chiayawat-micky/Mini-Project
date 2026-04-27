@@ -4,29 +4,83 @@ public class Graph {
 
     private Vertex vertexList;
 
+    public Vertex getVertexList() {
+        return this.vertexList;
+    }
+
+    public void setVertexList(Vertex vertexList) {
+        this.vertexList = vertexList;
+    }
+
     public Graph() {
 
     }
 
-    class Vertex {
-
+    public class Vertex {
         private String name;
         private Vertex next;
         private Edge edgeList;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Vertex getNext() {
+            return next;
+        }
+
+        public void setNext(Vertex newNext) {
+            this.next = newNext;
+        }
+
+        public Edge getEdgeList() {
+            return edgeList;
+        }
+
+        public void setEdgeList(Edge edgeList) {
+            this.edgeList = edgeList;
+        }
     }
 
-    class Edge {
-
+    public class Edge {
         private Vertex source;
         private Vertex destination;
         private double resistance;
         private Edge next;
+
+        public Vertex getDestination() {
+            return destination;
+        }
+
+        public void setDestination(Vertex des) {
+            this.destination = des;
+        }
+
+        public double getResistance() {
+            return resistance;
+        }
+
+        public void setResistance(double r) {
+            this.resistance = r;
+        }
+
+        public Edge getNext() {
+            return next;
+        }
+
+        public void setNext(Edge next) {
+            this.next = next;
+        }
     }
 
-    public boolean checkName(String name){
+    public boolean checkName(String name) {
         Vertex tempV = vertexList;
-        while(tempV != null){
-            if(tempV.name.equals(name)){
+        while (tempV != null) {
+            if (tempV.name.equals(name)) {
                 return true;
             }
             tempV = tempV.next;
@@ -37,10 +91,9 @@ public class Graph {
     public void addVertex(String name) {
         Vertex newVertex = new Vertex();
         newVertex.name = name;
-        if(checkName(name) == true){
+        if (checkName(name) == true) {
             return;
-        }
-        else if (vertexList == null) {
+        } else if (vertexList == null) {
             vertexList = newVertex;
             return;
         }
@@ -108,7 +161,7 @@ public class Graph {
                 System.out.print("No connections");
             } else {
                 while (tempE != null) {
-                    System.out.printf("-> (to + %s | R = %.2f Ohm)",tempE.destination.name,tempE.resistance);
+                    System.out.printf("-> (to + %s | R = %.2f Ohm)", tempE.destination.name, tempE.resistance);
                     tempE = tempE.next;
                 }
             }
@@ -118,29 +171,29 @@ public class Graph {
         System.out.println("------------------------------");
     }
 
-    public double seriesEquation(double num1,double num2){
+    public double seriesEquation(double num1, double num2) {
         double sum = num1 + num2;
         return sum;
     }
 
-    public double parallelEquation(double num1,double num2){
+    public double parallelEquation(double num1, double num2) {
         double sum = (num1 * num2) / (num1 + num2);
         return sum;
     }
 
-    public void circuitReductionParallel(){
+    public void circuitReductionParallel() {
         Vertex Vtemp = vertexList;
-        while(Vtemp != null){
+        while (Vtemp != null) {
             Edge Etemp = Vtemp.edgeList;
-            while(Etemp != null){
+            while (Etemp != null) {
                 Edge prev = Etemp;
                 Edge nametemp = Etemp.next;
-                while(nametemp != null){
-                    if(Etemp.destination.equals(nametemp.destination)){
+                while (nametemp != null) {
+                    if (Etemp.destination.equals(nametemp.destination)) {
                         Etemp.resistance = parallelEquation(Etemp.resistance, nametemp.resistance);
                         prev.next = nametemp.next;
                         nametemp = prev.next;
-                    }else{
+                    } else {
                         prev = nametemp;
                         nametemp = nametemp.next;
                     }
@@ -151,11 +204,11 @@ public class Graph {
         }
     }
 
-    public void circuitReductionSeries(){
+    public void circuitReductionSeries() {
         Vertex Vtemp = vertexList;
         Vertex prevV = null;
-        while(Vtemp != null){
-            if(getDegree(Vtemp.name) == 2){
+        while (Vtemp != null) {
+            if (getDegree(Vtemp.name) == 2) {
                 Edge e1 = Vtemp.edgeList;
                 Edge e2 = e1.next;
                 Vertex n1 = e1.destination;
@@ -164,9 +217,9 @@ public class Graph {
                 addEdge(n1.name, n2.name, datatemp);
                 deleteEdgeFrom(n1, Vtemp);
                 deleteEdgeFrom(n2, Vtemp);
-                if(prevV == null){
+                if (prevV == null) {
                     vertexList = Vtemp.next;
-                }else{
+                } else {
                     prevV.next = Vtemp.next;
 
                 }
@@ -179,14 +232,14 @@ public class Graph {
         }
     }
 
-    public void deleteEdgeFrom(Vertex from,Vertex target){
+    public void deleteEdgeFrom(Vertex from, Vertex target) {
         Edge Etemp = from.edgeList;
         Edge prev = null;
-        while(Etemp != null){
-            if(Etemp.destination == target){
-                if(prev == null){
+        while (Etemp != null) {
+            if (Etemp.destination == target) {
+                if (prev == null) {
                     from.edgeList = Etemp.next;
-                }else{
+                } else {
                     prev.next = Etemp.next;
                 }
                 return;
@@ -196,19 +249,19 @@ public class Graph {
         }
     }
 
-    public void totalResistance(){
-        if(vertexList == null){
+    public void totalResistance() {
+        if (vertexList == null) {
             System.out.println("Not found Vertex in Graph.");
             return;
         }
         Vertex tempV = vertexList;
         Edge tempE = tempV.edgeList;
         if (tempE == null) {
-        System.out.println("No resistance data found.");
-        return;
-    }
+            System.out.println("No resistance data found.");
+            return;
+        }
         System.out.println("------------------------------");
-        System.out.printf("Total of resistanece is %.2f Ohm.\n",tempE.resistance);
+        System.out.printf("Total of resistanece is %.2f Ohm.\n", tempE.resistance);
         System.out.println("------------------------------");
     }
 }
