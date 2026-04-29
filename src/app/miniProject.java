@@ -1,12 +1,15 @@
 package app;
 
 import datastruct.Graph;
+import logic.CircuitManage;
+
 import java.util.Scanner;
 
 public class miniProject {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Graph myGraph = new Graph();
+        CircuitManage myCircuit = new CircuitManage();
         System.out.println("Press the name NODE and num of resistance(A B 50) (Press 'END' to end the system ): ");
         while (true) {
             String source = sc.next();
@@ -20,11 +23,14 @@ public class miniProject {
             myGraph.addEdge(source, destination, data);
 
         }
+        boolean stillReducing = true;
+        while (stillReducing) {
+            boolean pChanged = myCircuit.circuitReductionParallel(myGraph);
+            boolean sChanged = myCircuit.circuitReductionSeries(myGraph);
+
+            stillReducing = pChanged || sChanged;
+        }
         myGraph.display();
-        myGraph.circuitReductionParallel();
-        myGraph.circuitReductionSeries();
-        // System.out.println("After reduction circuit");
-        // myGraph.display();
-        myGraph.totalResistance();
+        myCircuit.totalResistance(myGraph);
     }
 }
