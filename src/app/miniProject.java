@@ -23,6 +23,7 @@ public class miniProject {
             myGraph.addEdge(source, destination, data);
 
         }
+        myGraph.display();
         boolean stillReducing = true;
         while (stillReducing) {
             boolean pChanged = myCircuit.circuitReductionParallel(myGraph);
@@ -30,7 +31,6 @@ public class miniProject {
 
             stillReducing = pChanged || sChanged;
         }
-        myGraph.display();
         myCircuit.totalResistance(myGraph);
     }
 }
